@@ -1,0 +1,1 @@
+Apply memorization and tabulation techniques to efficiently compute the nth Fibonacci number using dynamic programming.
