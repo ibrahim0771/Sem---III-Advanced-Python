@@ -1,40 +1,39 @@
-def longest_common_subsequence(str1, str2):
-    m = len(str1)
-    n = len(str2)
+def find_lcs(first_seq, second_seq):
+    len1 = len(first_seq)
+    len2 = len(second_seq)
 
-    dp = [[0 for j in range(n + 1)] for i in range(m + 1)]
+    table = [[0 for col in range(len2 + 1)] for row in range(len1 + 1)]
 
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if str1[i - 1] == str2[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + 1
+    for row in range(1, len1 + 1):
+        for col in range(1, len2 + 1):
+            if first_seq[row - 1] == second_seq[col - 1]:
+                table[row][col] = table[row - 1][col - 1] + 1
             else:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                table[row][col] = max(table[row - 1][col], table[row][col - 1])
 
-    i = m
-    j = n
-    lcs = ""
+    row = len1
+    col = len2
+    result = ""
 
-    while i > 0 and j > 0:
-        if str1[i - 1] == str2[j - 1]:
-            lcs = str1[i - 1] + lcs
-            i -= 1
-            j -= 1
-        elif dp[i - 1][j] > dp[i][j - 1]:
-            i -= 1
+    while row > 0 and col > 0:
+        if first_seq[row - 1] == second_seq[col - 1]:
+            result = first_seq[row - 1] + result
+            row -= 1
+            col -= 1
+        elif table[row - 1][col] > table[row][col - 1]:
+            row -= 1
         else:
-            j -= 1
+            col -= 1
 
-    return lcs, dp[m][n]
+    return result, table[len1][len2]
 
-sequence1 = input("Enter the first string: ")
-sequence2 = input("Enter the second string: ")
+text1 = input("Enter the first string: ")
+text2 = input("Enter the second string: ")
 
-lcs, length = longest_common_subsequence(sequence1, sequence2)
+subsequence, lcs_size = find_lcs(text1, text2)
 
-print("\nLCS:", lcs)
-print("LCS Length:", length)
-
+print("\nLongest Common Subsequence:", subsequence)
+print("Length:", lcs_size)
 # Output:
 # Enter the first string: XMJYAUZ
 # Enter the second string: MZJAWXU
